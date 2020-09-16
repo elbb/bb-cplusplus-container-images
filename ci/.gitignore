@@ -1,3 +1,4 @@
 credentials.yaml
 credentials.*.yaml
+!credentials.template.yaml
 config.local.yaml
