@@ -1,0 +1,17 @@
+# ===================================================
+# alias
+# ===================================================
+
+alias=bb-cplusplus-container-images-version:
+  tasks:
+    - cplusplus-container-images-version
+
+alias=bb-cplusplus-container-images-build:
+  tasks:
+    - cplusplus-container-images-builder-build
+    - cplusplus-container-images-runtime-build
+
+alias=bb-cplusplus-container-images-deploy:
+  tasks:
+    - cplusplus-container-images-builder-deploy
+    - cplusplus-container-images-runtime-deploy

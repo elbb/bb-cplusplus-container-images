@@ -1,0 +1,98 @@
+# ===================================================
+# images
+# ===================================================
+image=image-cplusplus-container-images-runtime-x86_64:
+  image: "{env.BB_DOCKER_NAMESPACE:elbb}/bb-cplusplus-runtime-x86_64"
+  context: runtime
+  tags: ["{env.GitVersion_BranchVersion}"]
+  args:
+    ARCH: "amd64"
+
+image=image-cplusplus-container-images-runtime-x86_64-dev:
+  image: "{env.BB_DOCKER_NAMESPACE:elbb}/bb-cplusplus-runtime-x86_64-dev"
+  context: runtime
+  tags: ["{env.GitVersion_BranchVersion}"]
+  args:
+    ARCH: "amd64"
+    DEV: "1"
+
+image=image-cplusplus-container-images-runtime-aarch64:
+  image: "{env.BB_DOCKER_NAMESPACE:elbb}/bb-cplusplus-runtime-aarch64"
+  context: runtime
+  tags: ["{env.GitVersion_BranchVersion}"]
+  args:
+    ARCH: "arm64v8"
+
+image=image-cplusplus-container-images-runtime-aarch64-dev:
+  image: "{env.BB_DOCKER_NAMESPACE:elbb}/bb-cplusplus-runtime-aarch64-dev"
+  context: runtime
+  tags: ["{env.GitVersion_BranchVersion}"]
+  args:
+    ARCH: "arm64v8"
+    DEV: "1"
+
+# ===================================================
+# alias
+# ===================================================
+
+alias=cplusplus-container-images-runtime-build:
+  tasks:
+    - image-cplusplus-container-images-runtime-x86_64
+    - image-cplusplus-container-images-runtime-x86_64-dev
+    - image-cplusplus-container-images-runtime-aarch64
+    - image-cplusplus-container-images-runtime-aarch64-dev
+
+alias=cplusplus-container-images-runtime-x86_64-build:
+  tasks:
+    - image-cplusplus-container-images-runtime-x86_64
+  annotations:
+    description: "-> build cplusplus-runtime-x86_64"
+
+alias=cplusplus-container-images-runtime-x86_64-dev-build:
+  tasks:
+    - image-cplusplus-container-images-runtime-x86_64-dev
+  annotations:
+    description: "-> build cplusplus-runtime-x86_64-dev"
+
+alias=cplusplus-container-images-runtime-aarch64-build:
+  tasks:
+    - image-cplusplus-container-images-runtime-aarch64
+  annotations:
+    description: "-> build cplusplus-runtime-aarch64"
+
+alias=cplusplus-container-images-runtime-aarch64-dev-build:
+  tasks:
+    - image-cplusplus-container-images-runtime-aarch64-dev
+  annotations:
+    description: "-> build cplusplus-runtime-aarch64-dev"    
+
+alias=cplusplus-container-images-runtime-deploy:
+  tasks:
+    - image-cplusplus-container-images-runtime-x86_64:push
+    - image-cplusplus-container-images-runtime-aarch64:push
+    - image-cplusplus-container-images-runtime-x86_64-dev:push
+    - image-cplusplus-container-images-runtime-aarch64-dev:push
+
+alias=cplusplus-container-images-runtime-x86_64-deploy:
+  tasks:
+    - image-cplusplus-container-images-runtime-x86_64:push
+  annotations:
+    description: "-> deploy cplusplus-runtime-x86_64"
+
+alias=cplusplus-container-images-runtime-x86_64-dev-deploy:
+  tasks:
+    - image-cplusplus-container-images-runtime-x86_64-dev:push
+  annotations:
+    description: "-> deploy cplusplus-runtime-x86_64-dev"
+
+alias=cplusplus-container-images-runtime-aarch64-deploy:
+  tasks:
+    - image-cplusplus-container-images-runtime-aarch64:push
+  annotations:
+    description: "-> deploy cplusplus-runtime-aarch64"
+
+alias=cplusplus-container-images-runtime-aarch64-dev-deploy:
+  tasks:
+    - image-cplusplus-container-images-runtime-aarch64-dev:push
+  annotations:
+    description: "-> deploy cplusplus-runtime-aarch64-dev"    

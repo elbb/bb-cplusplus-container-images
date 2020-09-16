@@ -1,0 +1,23 @@
+# ===================================================
+# images
+# ===================================================
+image=image-cplusplus-container-images-builder:
+  image: "{env.BB_DOCKER_NAMESPACE:elbb}/bb-cplusplus-builder"
+  context: builder
+  tags: ["{env.GitVersion_BranchVersion}"]
+
+# ===================================================
+# alias
+# ===================================================
+
+alias=cplusplus-container-images-builder-build:
+  tasks:
+    - image-cplusplus-container-images-builder
+  annotations:
+    description: "-> build cplusplus-builder"
+
+alias=cplusplus-container-images-builder-deploy:
+  tasks:
+    - image-cplusplus-container-images-builder:push
+  annotations:
+    description: "-> deploy cplusplus-builder"
