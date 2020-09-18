@@ -2,7 +2,7 @@
 # Building block config
 # -----------------------------------------------------------------------------
 ## Specifies the name of the building block
-bb_name: bb-cplusplus-container-images
+bb_name: bb-cplusplus
 ## Specify the namespace for the building block image. This gets prefixed before <prefix>/<bb_name>
 ### example: bb_docker_namespace: "registry:5000/elbb" results in using "registry:5000/elbb/<bb_name>"
 ### "elbb" means using the docker hub, e.g. "elbb/<bb-name>"
