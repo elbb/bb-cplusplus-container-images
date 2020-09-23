@@ -31,6 +31,22 @@ image=image-cplusplus-container-images-runtime-aarch64-dev:
     ARCH: "arm64v8"
     DEV: "1"
 
+image=image-cplusplus-container-images-runtime-armv7hf:
+  image: "{env.BB_DOCKER_NAMESPACE:elbb}/bb-cplusplus-runtime-armv7hf"
+  context: runtime
+  tags: ["{env.GitVersion_BranchVersion}"]
+  args:
+    ARCH: "arm32v7"
+
+image=image-cplusplus-container-images-runtime-armv7hf-dev:
+  image: "{env.BB_DOCKER_NAMESPACE:elbb}/bb-cplusplus-runtime-armv7hf-dev"
+  context: runtime
+  tags: ["{env.GitVersion_BranchVersion}"]
+  args:
+    ARCH: "arm32v7"
+    DEV: "1"
+
+
 # ===================================================
 # alias
 # ===================================================
@@ -41,6 +57,8 @@ alias=cplusplus-container-images-runtime-build:
     - image-cplusplus-container-images-runtime-x86_64-dev
     - image-cplusplus-container-images-runtime-aarch64
     - image-cplusplus-container-images-runtime-aarch64-dev
+    - image-cplusplus-container-images-runtime-armv7hf
+    - image-cplusplus-container-images-runtime-armv7hf-dev
 
 alias=cplusplus-container-images-runtime-x86_64-build:
   tasks:
@@ -64,14 +82,28 @@ alias=cplusplus-container-images-runtime-aarch64-dev-build:
   tasks:
     - image-cplusplus-container-images-runtime-aarch64-dev
   annotations:
-    description: "-> build cplusplus-runtime-aarch64-dev"    
+    description: "-> build cplusplus-runtime-aarch64-dev"
+
+alias=cplusplus-container-images-runtime-armv7hf-build:
+  tasks:
+    - image-cplusplus-container-images-runtime-armv7hf
+  annotations:
+    description: "-> build cplusplus-runtime-armv7hf"
+
+alias=cplusplus-container-images-runtime-armv7hf-dev-build:
+  tasks:
+    - image-cplusplus-container-images-runtime-armv7hf-dev
+  annotations:
+    description: "-> build cplusplus-runtime-armv7hf-dev"
 
 alias=cplusplus-container-images-runtime-deploy:
   tasks:
     - image-cplusplus-container-images-runtime-x86_64:push
     - image-cplusplus-container-images-runtime-aarch64:push
+    - image-cplusplus-container-images-runtime-armv7hf:push
     - image-cplusplus-container-images-runtime-x86_64-dev:push
     - image-cplusplus-container-images-runtime-aarch64-dev:push
+    - image-cplusplus-container-images-runtime-armv7hf-dev:push
 
 alias=cplusplus-container-images-runtime-x86_64-deploy:
   tasks:
@@ -95,4 +127,16 @@ alias=cplusplus-container-images-runtime-aarch64-dev-deploy:
   tasks:
     - image-cplusplus-container-images-runtime-aarch64-dev:push
   annotations:
-    description: "-> deploy cplusplus-runtime-aarch64-dev"    
+    description: "-> deploy cplusplus-runtime-aarch64-dev"
+
+alias=cplusplus-container-images-runtime-armv7hf-deploy:
+  tasks:
+    - image-cplusplus-container-images-runtime-armv7hf:push
+  annotations:
+    description: "-> deploy cplusplus-runtime-armv7hf"
+
+alias=cplusplus-container-images-runtime-armv7hf-dev-deploy:
+  tasks:
+    - image-cplusplus-container-images-runtime-armv7hf-dev:push
+  annotations:
+    description: "-> deploy cplusplus-runtime-armv7hf-dev"
