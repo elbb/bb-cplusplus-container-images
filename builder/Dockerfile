@@ -35,7 +35,7 @@ RUN BUILD_LOGGER_64_BIT_ONLY=YES make -C /codechecker package
 FROM debian:buster-slim
 
 LABEL maintainer="elbb@conplement.de"
-LABEL description="This is a builder image for C++ components on x86_64 and armv8 architectures"
+LABEL description="This is a builder image for C++ components on x86_64, armv7hf, and armv8 (aarch64) architectures"
 LABEL vendor="conplement AG"
 LABEL uri="https://github.com/elbb/bb-cplusplus"
 
@@ -53,6 +53,7 @@ RUN apt-get update &&  \
     clang \
     clang-tidy \
     crossbuild-essential-arm64 \
+    crossbuild-essential-armhf \
     cmake \
     gosu \
     python3-dev \

@@ -11,7 +11,7 @@ Initial Version
 
 ### Added
 
--   C++ builder and runtime images for x86_64 and aarch64
+-   C++ builder and runtime images for x86_64, armv7hf and aarch64
 -   concourse environment for ci/cd builds
 -   dobi environment for local builds
 -   automated versioning with elbb/bb-gitversion 0.6.2
