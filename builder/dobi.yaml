@@ -2,7 +2,7 @@
 # images
 # ===================================================
 image=image-cplusplus-container-images-builder:
-  image: "{env.BB_DOCKER_NAMESPACE:elbb}/bb-cplusplus-builder"
+  image: "{env.BB_DOCKER_NAMESPACE}/bb-cplusplus-builder"
   context: builder
   tags: ["{env.GitVersion_BranchVersion}"]
 

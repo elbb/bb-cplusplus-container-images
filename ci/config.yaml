@@ -19,7 +19,7 @@ bb_gitversion_version: 0.6.2
 # Git config
 # -----------------------------------------------------------------------------
 ## Specify the git repository to work with
-git_source: git@github.com:elbb/bb-cplusplus-container-images.git
+git_source: https://github.com/elbb/bb-cplusplus-container-images.git
 ## Specify the git branch to work with
 git_branch: master
 ## This enables/disables ssl verification of the git resource
