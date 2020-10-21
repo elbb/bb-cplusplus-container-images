@@ -52,15 +52,16 @@ RUN apt-get update &&  \
     build-essential \
     clang \
     clang-tidy \
+    cmake \
     crossbuild-essential-arm64 \
     crossbuild-essential-armhf \
-    cmake \
+    doxygen \
+    gdb-multiarch \
     gosu \
+    graphviz \
     python3-dev \
     python3-pip \
     wget \
-    doxygen \
-    graphviz \
     && \
     apt-get clean
 RUN pip3 install setuptools wheel \
