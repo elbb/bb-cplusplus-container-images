@@ -14,7 +14,7 @@ Initial Version
 -   C++ builder and runtime images for x86_64, armv7hf and aarch64
 -   concourse environment for ci/cd builds
 -   dobi environment for local builds
--   automated versioning with elbb/bb-gitversion 0.6.2
+-   automated versioning with elbb/bb-gitversion 0.7.0
 -   added `default.env`, `local.env.template` and doku how to use it -> enables setting default and local environment variables for `dobi` targets
 -   `dobi.sh` downloads `dobi` if `dobi` is not `$PATH`
 -   `dobi.sh`: parameter checking and handling for `dobi` target `list` and `dobi.sh` target `version`
