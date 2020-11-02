@@ -2,16 +2,16 @@
 # alias
 # ===================================================
 
-alias=bb-cplusplus-container-images-version:
-  tasks:
-    - cplusplus-container-images-version
-
-alias=bb-cplusplus-container-images-build:
+alias=build:
   tasks:
     - cplusplus-container-images-builder-build
     - cplusplus-container-images-runtime-build
+  annotations:
+    description: "-> build all images"
 
-alias=bb-cplusplus-container-images-deploy:
+alias=deploy:
   tasks:
     - cplusplus-container-images-builder-deploy
     - cplusplus-container-images-runtime-deploy
+  annotations:
+    description: "-> deploy all images"
