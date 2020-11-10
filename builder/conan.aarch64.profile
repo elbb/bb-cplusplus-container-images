@@ -1,4 +1,4 @@
-toolchain=/usr/aarch64-linux-gnu
+toolchain=/
 target_host=aarch64-linux-gnu
 cc_compiler=gcc
 cxx_compiler=g++
