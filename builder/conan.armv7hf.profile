@@ -1,4 +1,4 @@
-toolchain=/usr/arm-linux-gnueabihf
+toolchain=/
 target_host=arm-linux-gnueabihf
 cc_compiler=gcc
 cxx_compiler=g++
