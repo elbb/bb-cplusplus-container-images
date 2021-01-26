@@ -49,6 +49,8 @@ COPY --from=codecheckerbuilder /codechecker/web/requirements.txt /tmp/requiremen
 RUN apt-get update &&  \
     apt-get install -y --no-install-recommends \
     apt-utils \
+    autoconf \
+    automake \
     build-essential \
     clang \
     clang-tidy \
@@ -57,11 +59,14 @@ RUN apt-get update &&  \
     crossbuild-essential-armhf \
     doxygen \
     gdb-multiarch \
+    git \
     gosu \
     graphviz \
+    libtool \
     python3-dev \
     python3-pip \
     wget \
+    xutils-dev \
     && \
     apt-get clean
 RUN pip3 install setuptools wheel \
