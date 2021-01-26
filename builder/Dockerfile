@@ -59,6 +59,7 @@ RUN apt-get update &&  \
     crossbuild-essential-armhf \
     doxygen \
     gdb-multiarch \
+    git \
     gosu \
     graphviz \
     libtool \
