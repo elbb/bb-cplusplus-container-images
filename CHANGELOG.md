@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- add ssh e.g. for conan builds which use git via ssh to get sources
+
 ## [0.1.2] 2021.Q1
 
 - add docker user/password for all docker images used for concourse ci
