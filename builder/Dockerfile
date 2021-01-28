@@ -63,6 +63,7 @@ RUN apt-get update &&  \
     gosu \
     graphviz \
     libtool \
+    openssh-client \
     python3-dev \
     python3-pip \
     wget \
