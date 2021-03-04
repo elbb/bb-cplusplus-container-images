@@ -1,16 +1,15 @@
 toolchain=/
 target_host=aarch64-linux-gnu
-cc_compiler=gcc
-cxx_compiler=g++
+cc_compiler=gcc-9
+cxx_compiler=g++-9
 
 [settings]
 os=Linux
-os_build=Linux
 arch=armv8
-arch_build=x86_64
 compiler=gcc
-compiler.version=8
+compiler.version=9.3
 compiler.libcxx=libstdc++11
+compiler.cppstd=17
 build_type=Release
 [options]
 [build_requires]

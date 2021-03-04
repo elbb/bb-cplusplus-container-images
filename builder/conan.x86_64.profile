@@ -1,19 +1,19 @@
 toolchain=/
 target_host=x86_64-linux-gnu
-cc_compiler=gcc
-cxx_compiler=g++
+cc_compiler=gcc-9
+cxx_compiler=g++-9
 
 [settings]
 os=Linux
-os_build=Linux
 arch=x86_64
-arch_build=x86_64
 compiler=gcc
-compiler.version=8
+compiler.version=9.3
 compiler.libcxx=libstdc++11
+compiler.cppstd=17
 build_type=Release
 [options]
 [build_requires]
+ninja/1.10.*: cmake/[>=3.15.0]
 [env]
 CONAN_CMAKE_FIND_ROOT_PATH=$toolchain
 CHOST=$target_host
