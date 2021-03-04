@@ -47,29 +47,41 @@ COPY --from=codecheckerbuilder /codechecker/web/requirements_py /tmp/requirement
 COPY --from=codecheckerbuilder /codechecker/web/requirements.txt /tmp/requirements_py
 
 RUN apt-get update &&  \
-    apt-get install -y --no-install-recommends \
-    apt-utils \
-    autoconf \
-    automake \
-    build-essential \
-    clang \
-    clang-tidy \
-    cmake \
-    crossbuild-essential-arm64 \
-    crossbuild-essential-armhf \
-    doxygen \
-    gdb-multiarch \
-    git \
-    gosu \
-    graphviz \
-    libtool \
-    openssh-client \
-    python3-dev \
-    python3-pip \
-    wget \
-    xutils-dev \
-    && \
-    apt-get clean
+        apt-get install -y --no-install-recommends \
+        apt-utils \
+        autoconf \
+        automake \
+        build-essential \
+        clang \
+        clang-tidy \
+        cmake \
+        crossbuild-essential-arm64 \
+        crossbuild-essential-armhf \
+        doxygen \
+        gdb-multiarch \
+        git \
+        gosu \
+        graphviz \
+        libtool \
+        openssh-client \
+        python3-dev \
+        python3-pip \
+        wget \
+        xutils-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# install explicitly gcc 9 from testing to have a c++17 compliant compiler
+RUN echo 'deb http://deb.debian.org/debian testing main' >> /etc/apt/sources.list
+RUN apt-get update &&  \
+        apt-get install -y --no-install-recommends \
+        gcc-9 \
+        g++-9 \
+        gcc-9-aarch64-linux-gnu \
+        g++-9-aarch64-linux-gnu \
+        gcc-9-arm-linux-gnueabihf \
+        g++-9-arm-linux-gnueabihf \
+    && apt-get autoremove && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 RUN pip3 install setuptools wheel \
     && pip3 install conan \
     && pip3 install -r /tmp/requirements_py/requirements.txt
