@@ -24,24 +24,6 @@ resources:
       password: ((registry_password))
       tag: ((bb_gitversion_version))
 
-  - name: s3-gitversion
-    type: s3
-    source:
-      bucket: ((bb_name))
-      endpoint: ((s3_endpoint))
-      regexp: gitversion/gitversion-(.*).tar.gz
-      access_key_id: ((s3_access_key))
-      secret_access_key: ((s3_secret_key))
-      disable_ssl: ((s3_skip_ssl_verification))
-
-  - name: image-aws-cli
-    type: docker-image
-    source:
-      repository: amazon/aws-cli
-      username: ((registry_user))
-      password: ((registry_password))
-      tag: 2.0.22
-
   - name: image-((bb_image_pref))-builder
     type: docker-image
     source:
@@ -110,71 +92,7 @@ resources:
       to: ((email_to))
 
 jobs:
-  - name: Generate gitversion and put it on S3
-    public: true
-    on_failure:
-      put: send-an-email
-      params:
-        subject_text: "ci ${BUILD_PIPELINE_NAME}: build ${BUILD_ID} failed!"
-        body_text: |
-          Oh no!
-          Build ID: "${BUILD_ID}"
-          Build Name: "${BUILD_NAME}"
-          Build Job Name: "${BUILD_JOB_NAME}"
-          Build Pipeline Name: "${BUILD_PIPELINE_NAME}"
-          ATC External URL: "${ATC_EXTERNAL_URL}"
-    plan:
-      - in_parallel:
-          - get: image-bb-gitversion-tool
-          - get: source
-            trigger: true
-          - get: image-aws-cli
-      - task: Generate version
-        image: image-bb-gitversion-tool
-        config:
-          platform: linux
-          inputs:
-            - name: source
-          outputs:
-            - name: gitversion
-          run:
-            path: /bin/bash
-            args:
-              - -exc
-              - |
-                entrypoint.sh &&
-                jq empty gitversion/json/gitversion.json &&
-                cat gitversion/json/gitversion.json &&
-                tar cvfz gitversion/gitversion-$(cat gitversion/plain/BranchVersion).tar.gz gitversion/*
-          params:
-            GIT_PATH: source
-            GEN_PATH: gitversion
-      - task: Check/Create bucket for ((bb_name)) on S3
-        image: image-aws-cli
-        config:
-          platform: linux
-          run:
-            path: /bin/bash
-            args:
-              - -xc
-              - |
-                mkdir -p ~/.aws
-                # hide setting credentials in plain text in concourse ui
-                set +x
-                export TERM="xterm-256color"
-                echo "[default]" > ~/.aws/credentials
-                echo "aws_access_key_id=((s3_access_key))" >> ~/.aws/credentials
-                echo "aws_secret_access_key=((s3_secret_key))" >> ~/.aws/credentials
-                set -x
-                # check if bucket exists on s3 endpoint. If not create one
-                aws --endpoint-url ((s3_endpoint)) s3api head-bucket --bucket ((bb_name)) 2> /dev/null
-                if [ $? != 0 ]; then aws s3 mb s3://((bb_name)) --endpoint-url ((s3_endpoint)); fi
-      - put: s3-gitversion
-        params:
-          file: gitversion/gitversion-*.tar.gz
-          acl: public-read
-
-  - name: Create docker images for ((bb_name)) and push them
+  - name: build-and-deploy-((bb_name))
     public: true
     on_failure:
       put: send-an-email
@@ -201,18 +119,37 @@ jobs:
     plan:
       - in_parallel:
           - get: source
-          - get: s3-gitversion
-            passed: [Generate gitversion and put it on S3]
             trigger: true
-            params:
-              unpack: true
+          - get: image-bb-gitversion-tool
+
+      - task: generate-version
+        image: image-bb-gitversion-tool
+        config:
+          platform: linux
+          inputs:
+            - name: source
+          outputs:
+            - name: gitversion
+          run:
+            path: /bin/bash
+            args:
+              - -exc
+              - |
+                entrypoint.sh
+          params:
+            GIT_PATH: source
+            GEN_PATH: gitversion
+            GIT_BRANCH: "((git_branch))"
+            DEFAULT_BRANCH: "((default_branch))"
+            VERBOSE: 1
+
       - in_parallel:
           - put: image-((bb_image_pref))-builder
             params:
               build: source/builder
               dockerfile: source/builder/Dockerfile
               tag_as_latest: ((bb_release_as_latest))
-              tag_file: s3-gitversion/gitversion/plain/BranchVersion
+              tag_file: gitversion/plain/BranchVersionDockerLabel
           - put: image-((bb_image_pref))-runtime-x86_64
             params:
               build: source/runtime
@@ -220,7 +157,7 @@ jobs:
                 ARCH: "amd64"
               dockerfile: source/runtime/Dockerfile
               tag_as_latest: ((bb_release_as_latest))
-              tag_file: s3-gitversion/gitversion/plain/BranchVersion
+              tag_file: gitversion/plain/BranchVersionDockerLabel
           - put: image-((bb_image_pref))-runtime-x86_64-dev
             params:
               build: source/runtime
@@ -229,7 +166,7 @@ jobs:
                 DEV: "1"
               dockerfile: source/runtime/Dockerfile
               tag_as_latest: ((bb_release_as_latest))
-              tag_file: s3-gitversion/gitversion/plain/BranchVersion
+              tag_file: gitversion/plain/BranchVersionDockerLabel
           - put: image-((bb_image_pref))-runtime-aarch64
             params:
               build: source/runtime
@@ -237,7 +174,7 @@ jobs:
                 ARCH: "arm64v8"
               dockerfile: source/runtime/Dockerfile
               tag_as_latest: ((bb_release_as_latest))
-              tag_file: s3-gitversion/gitversion/plain/BranchVersion
+              tag_file: gitversion/plain/BranchVersionDockerLabel
           - put: image-((bb_image_pref))-runtime-aarch64-dev
             params:
               build: source/runtime
@@ -246,7 +183,7 @@ jobs:
                 DEV: "1"
               dockerfile: source/runtime/Dockerfile
               tag_as_latest: ((bb_release_as_latest))
-              tag_file: s3-gitversion/gitversion/plain/BranchVersion
+              tag_file: gitversion/plain/BranchVersionDockerLabel
           - put: image-((bb_image_pref))-runtime-armv7hf
             params:
               build: source/runtime
@@ -254,7 +191,7 @@ jobs:
                 ARCH: "arm32v7"
               dockerfile: source/runtime/Dockerfile
               tag_as_latest: ((bb_release_as_latest))
-              tag_file: s3-gitversion/gitversion/plain/BranchVersion
+              tag_file: gitversion/plain/BranchVersionDockerLabel
           - put: image-((bb_image_pref))-runtime-armv7hf-dev
             params:
               build: source/runtime
@@ -263,4 +200,4 @@ jobs:
                 DEV: "1"
               dockerfile: source/runtime/Dockerfile
               tag_as_latest: ((bb_release_as_latest))
-              tag_file: s3-gitversion/gitversion/plain/BranchVersion
+              tag_file: gitversion/plain/BranchVersionDockerLabel

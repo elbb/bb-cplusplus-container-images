@@ -32,7 +32,7 @@ RUN BUILD_LOGGER_64_BIT_ONLY=YES make -C /codechecker package
 
 
 ###############################################################################
-FROM debian:buster-slim
+FROM ubuntu:20.04
 
 LABEL maintainer="elbb@conplement.de"
 LABEL description="This is a builder image for C++ components on x86_64, armv7hf, and armv8 (aarch64) architectures"
