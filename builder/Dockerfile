@@ -32,7 +32,9 @@ RUN BUILD_LOGGER_64_BIT_ONLY=YES make -C /codechecker package
 
 
 ###############################################################################
-FROM debian:buster-slim
+FROM ubuntu:20.04
+
+ARG DEBIAN_FRONTEND=noninteractive
 
 LABEL maintainer="elbb@conplement.de"
 LABEL description="This is a builder image for C++ components on x86_64, armv7hf, and armv8 (aarch64) architectures"
@@ -58,6 +60,12 @@ RUN apt-get update &&  \
         crossbuild-essential-arm64 \
         crossbuild-essential-armhf \
         doxygen \
+        g++-9 \
+        g++-9-aarch64-linux-gnu \
+        g++-9-arm-linux-gnueabihf \
+        gcc-9 \
+        gcc-9-aarch64-linux-gnu \
+        gcc-9-arm-linux-gnueabihf \
         gdb-multiarch \
         git \
         gosu \
@@ -69,18 +77,6 @@ RUN apt-get update &&  \
         wget \
         xutils-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# install explicitly gcc 9 from testing to have a c++17 compliant compiler
-RUN echo 'deb http://deb.debian.org/debian testing main' >> /etc/apt/sources.list
-RUN apt-get update &&  \
-        apt-get install -y --no-install-recommends \
-        gcc-9 \
-        g++-9 \
-        gcc-9-aarch64-linux-gnu \
-        g++-9-aarch64-linux-gnu \
-        gcc-9-arm-linux-gnueabihf \
-        g++-9-arm-linux-gnueabihf \
-    && apt-get autoremove && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install setuptools wheel \
     && pip3 install conan \

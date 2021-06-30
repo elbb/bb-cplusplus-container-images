@@ -1,5 +1,5 @@
 ARG ARCH
-FROM ${ARCH}/debian:buster-slim
+FROM ${ARCH}/ubuntu:20.04
 LABEL maintainer="elbb@conplement.de"
 LABEL description="This is a runtime image for C++ components on ${ARCH} architecture"
 LABEL vendor="conplement AG"
