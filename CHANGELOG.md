@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] 2022.Q2
+
+- updated conan profiles to use latest 9.x gcc
+
 ## [0.1.4] 2021.Q2
 
 - change base image from debian to ubuntu to be able to use new kernel features
